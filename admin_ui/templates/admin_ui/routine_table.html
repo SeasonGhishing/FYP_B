@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Routines</title>
+  <link rel="stylesheet" href="{% static 'css/routine_table.css' %}">
+</head>
+<body>
+  <h1>Routines</h1>
+
+  <div class="filter-container">
+    <div class="search-container">
+      <input type="text" id="routine-search-input" placeholder="Search...">
+    </div>
+    <select id="routine-class-filter" name="assigned_class">
+      <option value="">All Classes</option>
+      {% for class_obj in classes %}
+      <option value="{{ class_obj.id }}">{{ class_obj.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Subject</th>
+          <th>Class</th>
+          <th>Assigned Teacher</th>
+          <th>Day</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for routine in routines %}
+        <tr class="routine-row" data-day="{{ routine.day_of_week|lower }}" data-class="{{ routine.target_class.id }}">
+          <td>{{ forloop.counter }}</td>
+          <td>{{ routine.subject }}</td>
+          <td>{{ routine.target_class.name }}</td>
+          <td>{{ routine.assigned_teacher.full_name}}</td>
+          <td>{{ routine.day_of_week}}</td>
+          <td>{{ routine.start_time }}</td>
+          <td>{{ routine.end_time }}</td>
+          <td>
+            <button class="edit-button" onclick="editRoutine('{{ routine.id }}')">Edit</button>
+            <button class="delete-button" onclick="confirmDeleteRoutine('{{ routine.id }}')">Delete</button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="add-button-container">
+    <button class="add-button" onclick="loadContent('routine_form')">Add Routine</button>
+  </div>
+
+  <script>
+    function initializeFilters() {
+      const searchInput = document.getElementById('search-input');
+      const rows = document.querySelectorAll('.routine-row');
+      const classFilter = document.getElementById('class-filter');
+      const dayFilter = document.getElementById('day-filter');
+
+      function filterRows() {
+        const selectedClass = classFilter.value;
+        const selectedDay = dayFilter.value.toLowerCase();
+        const searchTerm = searchInput.value.trim().toLowerCase();
+
+        rows.forEach(function(row) {
+          const routineClass = row.dataset.class;
+          const routineDay = row.dataset.day.toLowerCase();
+          const subject = row.cells[1].textContent.trim().toLowerCase();
+          const assignedTeacher = row.cells[3].textContent.trim().toLowerCase();
+
+          if ((selectedClass === '' || routineClass === selectedClass) &&
+              (selectedDay === '' || routineDay === selectedDay) &&
+              (subject.includes(searchTerm) || assignedTeacher.includes(searchTerm))) {
+            row.style.display = 'table-row';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      }
+
+      searchInput.addEventListener('keyup', filterRows);
+      classFilter.addEventListener('change', filterRows);
+      dayFilter.addEventListener('change', filterRows);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeFilters();
+    });
+  </script>
+</body>
+</html>

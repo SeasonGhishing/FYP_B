@@ -1,0 +1,144 @@
+.announcement-section {
+  color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center; /* Center items vertically */
+  }
+  
+  .announcement-card {
+    background-color: white;
+    height: 299px;
+    width: 493px;
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(to bottom right, #ffffff, #f0f0f0); 
+    margin-top: 20px;
+  }
+  
+  .announcement-card h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .announcement-card p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .announcement-card .timestamp {
+    color: #999;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+
+  .add-announcement-card {
+    background: linear-gradient(to bottom right, #ffffff, #f0f0f0);
+    width: 299px;
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center items horizontally */
+    animation: fadeIn 0.5s ease;
+
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .add-announcement-card form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-announcement-card form label,
+  .add-announcement-card form select,
+  .add-announcement-card form textarea,
+  .add-announcement-card form button {
+    margin-bottom: 10px;
+  }
+  
+  .add-announcement-card form button {
+    width: 100px;
+    height: 30px;
+    background-color: #2F6FED;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for background color */
+  }
+
+  
+  .add-announcement-card form button:hover {
+    background-color: #2556b5;
+  }
+  
+  .add-announcement-card form input,
+  .add-announcement-card form textarea,
+  .add-announcement-card form select {
+    width: 100%; /* Make input fields take full width */
+    margin-bottom: 10px;
+    padding: 8px; /* Adjust padding for better appearance */
+    border: none;
+    border-bottom: 1px solid #ccc; /* Add simple line border */
+    background-color: transparent; /* Make background transparent */
+    transition: border-color 0.3s; /* Smooth transition for border color */
+  }
+
+  
+  .add-announcement-card h2 {
+    color: black;
+    margin-bottom: 10px;
+  }
+  
+  .add-announcement-card form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center form items horizontally */
+  }
+  
+  .add-announcement-card form label {
+    display: none; /* Hide labels for cleaner UI */
+  }
+  
+
+  
+  .add-announcement-card form input:focus,
+  .add-announcement-card form textarea:focus,
+  .add-announcement-card form select:focus {
+    outline: none;
+    border-color: #2F6FED; /* Change border color on focus */
+  }
+  
+  /* Ensure placeholders are visible */
+input::placeholder,
+textarea::placeholder {
+  color: #999; /* Placeholder text color */
+}
+
+/* Style for the text button */
+.view-all-button {
+  background: none;
+  border: none;
+  color: #2F6FED; /* Change color as desired */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  padding-top: 16px;
+}
+
+/* Remove default button styling */
+.view-all-button:focus {
+  outline: none;
+}

@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./chat"
+    ],
+    "git.ignoreLimitWarning": true
+}

@@ -1,0 +1,130 @@
+{% load static %}
+{% load nepalidatetime %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}People List{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/people.css' %}">
+</head>
+
+<body>
+    <h1 style="font-weight: 600; font-style: italic; font-size: 40px; color: #1B1F27;">Attendance</h1>
+    <h2 style="font-weight: 400; font-style: italic; font-size: 28px; color: #1B1F27;">Overview</h2>
+
+    <!-- Filter dropdown -->
+    <div class="filter-container">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search...">
+        </div>
+
+        <!-- Nepali Months dropdown -->
+        <select id="month-filter">
+            <option value="">All Months</option>
+            <option value="01">Baishakh</option>
+            <option value="02">Jestha</option>
+            <option value="03">Ashadh</option>
+            <option value="04">Shrawan</option>
+            <option value="05">Bhadra</option>
+            <option value="06">Ashwin</option>
+            <option value="07">Kartik</option>
+            <option value="08">Mangsir</option>
+            <option value="09">Poush</option>
+            <option value="10">Magh</option>
+            <option value="11">Falgun</option>
+            <option value="12">Chaitra</option>
+        </select>
+
+        <!-- Class dropdown -->
+        <select id="class-filter" name="assigned_class">
+            <option value="">All Class</option>
+            {% for class_obj in classes %}
+            <option value="{{ class_obj.id }}">{{ class_obj.name }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Role dropdown -->
+        <select id="role-filter">
+            <option value="all">All</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Student">Student</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+        <table style="margin-bottom: 80px;">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Class</th>
+                    <th>Date</th>
+                    <th>Entry Time</th>
+                    <th>Exit Time</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="attendance-table-body">
+                {% for attendance in attendances %}
+                <tr class="person-row" data-role="{{ attendance.user_details.role }}" data-class="{{ attendance.user_details.assigned_class }}" data-date="{{ attendance.date }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ attendance.user_details.full_name}}</td>
+                    <td>{{ attendance.user_details.role }}</td>
+                    <td>{{ attendance.user_details.assigned_class_name }}</td>
+                    <td>{{ attendance.date }}</td>
+                    <td>{{ attendance.entry_time }}</td>
+                    <td>{{ attendance.exit_time }}</td>
+                    <td>{{ attendance.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const classFilter = document.getElementById('class-filter');
+            const roleFilter = document.getElementById('role-filter');
+            const monthFilter = document.getElementById('month-filter');
+            const attendanceTableBody = document.getElementById('attendance-table-body');
+            const rows = attendanceTableBody.getElementsByClassName('person-row');
+
+            function filterTable() {
+                const searchText = searchInput.value.toLowerCase();
+                const selectedClass = classFilter.value;
+                const selectedRole = roleFilter.value;
+                const selectedMonth = monthFilter.value;
+
+                for (const row of rows) {
+                    const name = row.children[1].textContent.toLowerCase();
+                    const role = row.getAttribute('data-role');
+                    const classId = row.getAttribute('data-class');
+                    const date = row.getAttribute('data-date');
+                    const month = date.split('-')[1];
+
+                    const matchesSearch = name.includes(searchText);
+                    const matchesRole = selectedRole === 'all' || role === selectedRole;
+                    const matchesClass = selectedClass === '' || classId === selectedClass;
+                    const matchesMonth = selectedMonth === '' || month === selectedMonth;
+
+                    if (matchesSearch && matchesRole && matchesClass && matchesMonth) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            }
+
+            searchInput.addEventListener('input', filterTable);
+            classFilter.addEventListener('change', filterTable);
+            roleFilter.addEventListener('change', filterTable);
+            monthFilter.addEventListener('change', filterTable);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+/* styles.css */
+
+/* General styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.card {
+  background-color: white;
+  width: 900px;
+  /* Adjusted width for better responsiveness */
+  max-width: 100%;
+  /* Ensure card remains responsive */
+  height: 520px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to bottom right, #ffffff, #f0f0f0);
+  padding: 20px;
+  position: relative;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.circle {
+  width: 97px;
+  height: 97px;
+  background-color: #cacaca;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+  left: calc(50% - 48.5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-button {
+  color: #2f6fed;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.line {
+  height: 1px;
+  width: calc(100% - 40px);
+  /* Adjusted width to match the card */
+  background-color: #c0c0d8;
+  margin: 20px auto;
+  position: absolute;
+  top: 180px;
+  /* Adjusted top position to place it below the add button */
+  left: 20px;
+  /* Adjusted left position to match card padding */
+  right: 20px;
+  /* Adjusted right position to match card padding */
+}
+
+.fields-container {
+  margin-top: 200px;
+  /* Adjusted top margin to create space below the line */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.field {
+  width: calc(30% - 10px);
+  /* Adjusted width for three fields in a row */
+  border: 1px solid #c0c0d8;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 20px;
+  margin-right: 10px;
+  height: 38px;
+  /* Added margin between fields */
+}
+
+.field input,
+.field select {
+  width: 100%;
+  /* Adjusted width to fill the entire field */
+  height: 42px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.create-button {
+  width: 150px;
+  height: 60px;
+  background-color: #2f6fed;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.back-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.back-button {
+  text-decoration: none;
+  font-size: 24px;
+  color: #1B1F27;
+  margin-right: 10px;
+}
+
+.toast {
+position: fixed;
+top: 20px;
+right: 20px;
+background-color: #4CAF50; /* Green */
+color: white;
+padding: 16px;
+border-radius: 5px;
+box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+z-index: 1000; /* Ensure it appears above other content */
+opacity: 0;
+transition: opacity 0.5s ease-in-out;
+}
+
+.toast.error {
+background-color: #f44336; /* Red */
+}
+
+.toast.show {
+opacity: 1;
+}

@@ -1,0 +1,160 @@
+.table-container {
+  overflow-x: auto;
+}
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th,
+  td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  thead th {
+    background-color: #2f6fed;
+    color: white;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  tbody tr:hover {
+    background-color: #e3e3e3;
+  }
+  
+  tbody td {
+    border-bottom: 1px solid #c0c0d8;
+  }
+  
+  td:last-child button {
+    margin-right: 5px;
+  }
+  
+  button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #e0e0e0;
+  }
+  
+  /* Rest of your CSS */
+  
+  button.edit-button {
+    background-color: #47ff85;
+    /* Red color */
+    color: white;
+    /* Text color */
+  }
+  
+  button.edit-button:hover {
+    background-color: #38ff59;
+    /* Darker red on hover */
+  }
+  
+  button.delete-button {
+    background-color: #ff6347;
+    /* Red color */
+    color: white;
+    /* Text color */
+  }
+  
+  button.delete-button:hover {
+    background-color: #ff4836;
+    /* Darker red on hover */
+  }
+  
+  /* Rest of your CSS */
+  
+  .add-button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .add-button {
+    width: 130px;
+    height: 55px;
+    background-color: #2f6fed;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-button:hover {
+    background-color: #2658ad;
+  }
+  
+  
+  /* Rest of your CSS */
+  
+  .filter-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+    padding-right: 45px;
+  }
+  
+  #day-filter {
+    width: 150px;
+    height: 40px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: white;
+    font-size: 16px;
+  }
+  
+  /* Rest of your CSS */
+  
+  
+  /* Rest of your CSS */
+    /* Search container */
+    .search-container {
+      margin-right: 20px; /* Adjust margin as needed */
+    }
+    
+    .search-container input[type="text"] {
+      width: 200px;
+      height: 22px;
+      padding: 0.5rem 2rem 0.5rem 0.5rem; /* Adjust padding for search icon */
+      border: 1px solid #ccc;
+      border-radius: 4px; /* Update border radius */
+      font-size: 16px;
+    }
+    
+    /* Search icon */
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 0.5rem;
+      transform: translateY(-50%);
+    }
+
+    .filter-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    #routine-class-filter {
+      width: 150px;
+      height: 40px;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 16px;
+    }

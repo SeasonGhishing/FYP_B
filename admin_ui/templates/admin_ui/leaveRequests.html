@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Requests</title>
+    <link rel="stylesheet" href="{% static 'css/routine_table.css' %}">
+</head>
+
+<body>
+    <h1 style="font-weight: 600; font-style: italic; font-size: 40px; color: #1B1F27;">Leave Requests</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Email</th>
+                    <th>Permission Detail</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in leave_requests %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ request.requester }}</td>
+                    <td>{{ request.reason }}</td>
+                    <td>{{ request.description }}</td>
+                    <td>{{ request.status }}</td>
+                    <td>
+                        {% if request.status != 'APPROVED' and request.status != 'REJECTED' %}
+                            <button class="edit-button" onclick="approveLeaveRequest('{{ request.id }}')">Approve</button>
+                            <button class="delete-button" onclick="rejectLeaveRequest('{{ request.id }}')">Reject</button>
+                        {% else %}
+                            <span class="status">done</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function approveLeaveRequest(leaveRequestId) {
+            sendRequest(leaveRequestId, 'approve');
+        }
+    
+        function rejectLeaveRequest(leaveRequestId) {
+            sendRequest(leaveRequestId, 'reject');
+        }
+    
+        function sendRequest(leaveRequestId, action) {
+            fetch('http://192.168.1.70:8000/api/attendance/informed/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken') // Ensure CSRF token is included in the request headers
+                },
+                body: JSON.stringify({
+                    leave_request_id: leaveRequestId,
+                    action: action
+                })
+            }).then(response => {
+                if (response.ok) {
+                    alert('Leave request status updated successfully');
+                    location.reload(); // Reload the page after successful update
+                } else {
+                    alert('Failed to update leave request status');
+                }
+            }).catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing the request');
+            });
+        }
+    
+        // Function to get CSRF token from cookies
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+    
+</body>
+
+</html>

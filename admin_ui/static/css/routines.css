@@ -1,0 +1,22 @@
+/* routines.css */
+
+/* Style for the card container */
+.card-container {
+    display: flex; /* Use flexbox layout */
+    justify-content: space-around; /* Distribute items evenly along the main axis */
+    align-items: center; /* Align items vertically in the center */
+    flex-wrap: wrap; /* Allow items to wrap to the next line if needed */
+  }
+  
+  /* Style for individual cards */
+  .card {
+    width: 200px; /* Set a fixed width for each card */
+    margin: 10px; /* Add some space between cards */
+    cursor: pointer; /* Change cursor to pointer on hover */
+  }
+  
+  .card img {
+    width: 100%; /* Ensure images fill the entire width of the card */
+    height: auto; /* Maintain aspect ratio of images */
+  }
+  

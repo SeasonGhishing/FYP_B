@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <script src="{% static 'js/script.js' %}"></script>
+  <title>Your Admin Panel</title>
+</head>
+
+<body>
+
+  <header class="header">
+    <h2 style="font-weight: 400; font-style: italic; font-size: 28px; color: #1B1F27; padding-left: 55px">DPM School</h2>
+
+    <nav class="navigation">
+      <ul>
+        <li class="nav-item" data-item="dashboard" onclick="selectItem('dashboard')">
+          <img src="{% static 'icons/home_icon.png' %}" alt="Home Icon">
+          Dashboard
+        </li>
+        <li class="nav-item" data-item="people" onclick="selectItem('people')">
+          <img src="{% static 'icons/people_icon.png' %}" alt="People Icon">
+          People
+        </li>
+        <li class="nav-item" data-item="attendance" onclick="selectItem('attendance')">
+          <img src="{% static 'icons/attendance_icon.png' %}" alt="Attendance Icon">
+          Attendance
+        </li>
+        <li class="nav-item" data-item="leaveRequests" onclick="selectItem('leaveRequests')">
+          <img src="{% static 'icons/leave_icon.png' %}" alt="Leave Icon">
+          Leave Requests
+        </li>
+        <li class="nav-item" data-item="announcement" onclick="selectItem('announcement')">
+          <img src="{% static 'icons/announcement_icon.png' %}" alt="Announcement Icon">
+          Announcement
+        </li>
+        <li class="nav-item" data-item="routine_table" onclick="selectItem('routine_table')">
+          <img src="{% static 'icons/routines_icon.png' %}" alt="Routines Icon">
+          Routines
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="main-content">
+  </div>
+
+</body>
+
+</html>

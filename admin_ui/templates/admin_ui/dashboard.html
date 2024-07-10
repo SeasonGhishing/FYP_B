@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}People List{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+    <h1 style="font-weight: 600; font-style: italic; font-size: 40px; color: #1B1F27;">Dashboard</h1>
+
+    <div class="card-container">
+        <div class="card" style="background-image: linear-gradient(to bottom right, #E57373, #FFCDD2); color: #1B1F27;">
+            <img src="{% static 'images/routine_kid_img.png' %}" alt="Image" style="width: 63px; height: 63px;">
+            <div class="card-content">
+                <div class="card-number" style="font-size: 40px; font-weight: 600; font-style: italic;">{{ students }}</div>
+            </div>
+            
+            <div class="card-label" style="font-size: 18px; font-style: italic;">Total Students</div>
+        </div>
+        <div class="card" style="background-image: linear-gradient(to bottom right, #64B5F6, #BBDEFB); color: #1B1F27;">
+            <img src="{% static 'images/teacher.png' %}" alt="Image" style="width: 63px; height: 63px;">
+            <div class="card-content">
+                <div class="card-number" style="font-size: 40px; font-weight: 600; font-style: italic;">{{ teachers }}</div>
+            </div>
+            <div class="card-label" style="font-size: 18px; font-style: italic;">Total Teachers</div>
+        </div>
+        <div class="card" style="background-image: linear-gradient(to bottom right, #81C784, #C8E6C9); color: #1B1F27;">
+            <img src="{% static 'images/class.png' %}" alt="Image" style="width: 63px; height: 63px;">
+            <div class="card-content">
+                <div class="card-number" style="font-size: 40px; font-weight: 600; font-style: italic;">{{ classes }}</div>
+            </div>
+            <div class="card-label" style="font-size: 18px; font-style: italic;">Total Classes</div>
+        </div>
+    </div>
+    <div class="attendance-card" style="background-image: linear-gradient(to bottom right, #ffffff, #f0f0f0); color: #1B1F27;">
+        <h2>Attendance Overview</h2>
+        <div class="attendance-graph">
+            <svg>
+              <circle class="bg" cx="57" cy="57" r="52" />
+              <circle class="meter-1" cx="57" cy="57" r="52" />
+            </svg>
+            <h1 style="font-weight: 400; font-style: italic; font-size: 26px; color: #1B1F27;" id="attendance-percentage">{{ attendance_percentage }}% </h1>
+
+    <h1 style="font-weight: 600; font-style: italic; font-size: 30px; color: #1B1F27;" id="attendance-percentage">Present</h1>
+
+          </div>
+    </div>
+    <!-- Rest of your code -->
+    <script id="attendance-percentage-data" type="application/json">{{ attendance_percentage }}</script>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+
+
+</html>

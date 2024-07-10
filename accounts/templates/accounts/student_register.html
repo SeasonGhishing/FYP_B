@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'accounts/styles.css' %}">
+  <title>Student Registration</title>
+</head>
+
+<body>
+  <h1 style="font-weight: 600; font-style: italic; font-size: 40px; color: #1B1F27;">People</h1>
+  <div class="back-button-container">
+    <h2 style="font-weight: 400; font-style: italic; font-size: 28px; color: #1B1F27; margin-left: 10px;">Add Student</h2>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <form id="student-form" method="post" enctype="multipart/form-data" {% if not student_id %}action="{% url 'accounts:create-student' %}"{% endif %}>
+
+        {% csrf_token %}
+        <input type="hidden" name="student_id" value="{{ student_id }}">
+        {% if student_id %}
+        <p>User ID: {{ student_id }}</p>
+        {% else %}
+        <p>No user ID found</p>
+        {% endif %}
+        
+
+        <div class="circle" onclick="document.getElementById('imageInput').click()"></div>
+        <button class="add-button" onclick="document.getElementById('imageInput').click(); return false;">Add+</button>
+        <input type="file" id="imageInput" name="image" style="display: none;" accept="image/*" onchange="previewImage(event)">
+        <div class="line"></div>
+        <div class="fields-container">
+          <div class="field">
+            <input type="text" placeholder="Rfid Number" id="rfid_number" name="rfid_number" value="{% if not student_id and latest_rfid %}{{ latest_rfid }}{% endif %}">
+
+
+          </div>
+          <div class="field">
+            <input type="text" placeholder="Full Name" id="full_name" name="full_name">
+          </div>
+          <div class="field">
+            <input type="text" placeholder="Phone Number" id="phone_number" name="phone_number">
+          </div>
+          <div class="field">
+            <select id="gender" name="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="field">
+            <select id="assigned_class" name="assigned_class">
+              <option value="">NONE</option>
+              {% for class_obj in classes %}
+              <option value="{{ class_obj.id }}">{{ class_obj.name }}</option>
+              {% endfor %}
+            </select><br>
+          </div>
+          <div class="field">
+            <input type="parent_name" placeholder="Parent Name" select id="parent_name" name="parent_name">
+          </div>
+          <div class="field">
+            <input type="email" placeholder="Email" id="email" name="email">
+          </div>
+          <div class="field">
+            <input type="password" placeholder="Password" id="password" name="password">
+          </div>
+        </div>
+        <button type="submit" id="submit-button" class="create-button">{% if student_id %}Update{% else %}Create{% endif %}</button>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="{% static 'accounts/script.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('student-form');
+      form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+    
+        const formData = new FormData(form);
+        const studentId = formData.get('student_id');
+        // Make sure studentId is not 'None' or null
+        const method = studentId && studentId !== 'None' ? 'PATCH' : 'POST';
+        const url = studentId && studentId !== 'None' ? `/api/accounts/students/${studentId}/` : '/api/accounts/create-student/';
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    
+        // Always append the image file to the FormData object
+        const imageFile = document.getElementById('imageInput').files[0];
+        formData.append('image', imageFile || ''); // Append empty string if no image
+    
+        const requestBody = {};
+        formData.forEach((value, key) => {
+          if (value && key !== 'csrfmiddlewaretoken' && !(key === 'image' && typeof value === 'object')) {
+            requestBody[key] = value;
+          }
+        });
+    
+        const jsonBody = JSON.stringify(requestBody);
+        console.log('Request Body:', jsonBody);
+    
+        fetch(url, {
+          method: method,
+          headers: {
+            'X-CSRFToken': csrftoken,
+            ...(method === 'PATCH' && {'Content-Type': 'application/json'})
+          },
+          body: method === 'PATCH' ? jsonBody : formData
+        })
+        .then(response => {
+          if (response.ok) {
+            console.log('Success');
+            window.location.href = '{{ BASE_URL }}/admin_ui/people/';
+          } else {
+            console.error('Error:', response.status);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+    
+  
+  
+  
+
+    function goBack() {
+        window.history.back();
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Assume you have an edit button with id 'edit-button'
+      const editButton = document.getElementById('edit-button');
+  
+      // Check if the edit button exists
+      if (editButton) {
+          // Add event listener to the edit button
+          editButton.addEventListener('click', function(event) {
+              event.preventDefault(); // Prevent default button behavior
+  
+              const studentId = document.getElementById('student_id').value;
+              fetchStudentData(studentId)
+              .then(studentData => {
+                  // Populate form fields with teacher data
+                  document.getElementById('rfid_number').value = studentData.rfid_number;
+                  document.getElementById('full_name').value = studentData.full_name;
+                  document.getElementById('phone_number').value = studentData.phone_number;
+                  document.getElementById('gender').value = studentData.gender;
+                  document.getElementById('assigned_class').value = studentData.assigned_class;
+                  document.getElementById('email').value = studentData.email;
+                  document.getElementById('imagePreview').src = studentData.image;
+                  document.getElementById('parent_name').value = studentData.parent_name;
+                  document.getElementById('password').value = '';
+              })
+              .catch(error => {
+                  console.error('Error fetching teacher data:', error);
+              });
+          });
+      }
+  });
+  
+
+function fetchStudentData(studentId) {
+    const url = `/api/accounts/student_register_page/${studentId}/`;
+
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch students data');
+            }
+            return response.json();
+        });
+}
+
+
+function fetchUserData(userId) {
+    const url = `/api/accounts/users/${userId}/`;
+
+    // Fetch user data using the specified URL
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data');
+            }
+            return response.json();
+        });
+}
+
+
+</script>
+</body>
+
+</html>

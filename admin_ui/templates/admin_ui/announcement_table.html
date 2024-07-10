@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement</title>
+    <link rel="stylesheet" href="{% static 'css/routine_table.css' %}">
+</head>
+
+<body>
+    <h1 style="font-weight: 600; font-style: italic; font-size: 40px; color: #1B1F27;">Announcement</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Title</th>
+                    <th>Content</th>
+                    <th>Target class</th>
+                    <th>Posted on</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for announcement_list in announcement %}
+                <tr>
+                    <td>{{ announcement_list.id }}</td>
+                    <td>{{ announcement_list.title }}</td>
+                    <td>{{ announcement_list.content }}</td>
+                    {% if announcement_list.target_class == None%}
+                        <td>all</td>
+                    {% else %}
+                    <td>{{ announcement_list.target_class.name }}</td>
+                {% endif %}
+                    <td>{{ announcement_list.timestamp }}</td>
+                    <td>
+                    <button class="delete-button" onclick="confirmDeleteAnnouncement('{{ announcement_list.id }}')">Remove</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+  
+</body>
+
+</html>

@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}People List{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/people.css' %}">
+</head>
+
+<body>
+    <h1 style="font-weight: 600; font-style: italic; font-size: 40px; color: #1B1F27;">People</h1>
+    <h2 style="font-weight: 400; font-style: italic; font-size: 28px; color: #1B1F27;">Overview</h2>
+
+    <!-- Filter dropdown -->
+    <div class="filter-container">
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search...">
+        </div>
+
+        <!-- Class dropdown -->
+        <select id="class-filter" name="assigned_class">
+            <option value="">All Class</option>
+            {% for class_obj in classes %}
+            <option value="{{ class_obj.id }}">{{ class_obj.name }}</option>
+            {% endfor %}
+        </select>
+
+        <!-- Role dropdown -->
+        <select id="role-filter">
+            <option value="all">All</option>
+            <option value="Teacher">Teacher</option>
+            <option value="Student">Student</option>
+        </select>
+    </div>
+
+    <div class="table-container">
+        <table style="margin-bottom: 80px;">
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Phone Number</th>
+                    <th>Class/Assigned</th>
+                    <th>Rfid Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in people_list|dictsort:"full_name" %}
+                <tr class="person-row" data-id="{{ person.id }}" data-role="{{ person.role|lower }}" data-class="{{ person.assigned_class.id }}">
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <div class="profile-info">
+                            <img src="/media/{{ person.image }}" alt="User Profile" class="profile-picture">
+                            <span class="profile-name">{{ person.full_name }}</span>
+                        </div>
+                    </td>
+                    <td>{{ person.email }}</td>
+                    <td>{{ person.role }}</td>
+                    <td>{{ person.phone_number }}</td>
+                    <td>{{ person.assigned_class.name }}</td>
+                    <td>{{ person.rfid_number }}</td>
+                    <td>
+                        <button id="edit-button" class="edit-button" onclick="editPerson('{{ person.id }}')">Edit</button>
+                        <button class="delete-button" onclick="confirmDelete('{{ person.id }}')">Remove</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="add-button-container">
+            <button class="add-button add-student-button" onclick="loadContent('student')">Add Student</button>
+            <button class="add-button add-teacher-button" onclick="loadContent('teacher')">Add Teacher</button>
+        </div>
+    </div>
+    <script>
+        function editPerson(id) {
+          // Retrieve the role associated with the given ID
+          const roleElement = document.querySelector(`[data-id='${id}']`);
+          if (roleElement) {
+              const role = roleElement.dataset.role;
+              const rolePlural = role === 'student' ? 'student' : 'teacher'; // Adjust for pluralization
+      
+              // Redirect to the appropriate page based on the role
+              window.location.href = `/api/accounts/${rolePlural}_register_page/?id=${id}`;
+          } else {
+              console.error('No element found with the specified ID:', id);
+              alert('Error: Invalid ID. Please try again.');
+          }
+      }
+      
+      
+      function showToast(message, type) {
+        const toast = document.createElement('div');
+        toast.textContent = message;
+        toast.classList.add('toast');
+        if (type === 'success') {
+          toast.classList.add('success');
+        } else if (type === 'error') {
+          toast.classList.add('error');
+        }
+        document.body.appendChild(toast);
+      
+        setTimeout(() => {
+          toast.classList.add('show');
+        }, 100); // Add a small delay before showing to allow for CSS transition
+      
+        setTimeout(() => {
+          toast.classList.remove('show');
+          setTimeout(() => {
+            toast.remove();
+          }, 500); // Transition duration + delay before removing
+        }, 3000); // Adjust duration as needed
+      }
+      
+  
+      document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        const rows = document.querySelectorAll('.person-row');
+        const roleFilter = document.getElementById('role-filter');
+        const classFilter = document.getElementById('class-filter');
+  
+        function filterRows() {
+          const selectedRole = roleFilter.value.toLowerCase();
+          const selectedClass = classFilter.value;
+          const searchTerm = searchInput.value.trim().toLowerCase();
+  
+          rows.forEach(function(row) {
+            const personRole = row.dataset.role.toLowerCase();
+            const personClass = row.dataset.class;
+  
+            if ((selectedRole === 'all' || personRole === selectedRole) && (selectedClass === '' || personClass === selectedClass)) {
+              const name = row.querySelector('.profile-name').textContent.trim().toLowerCase();
+  
+              if (name.includes(searchTerm)) {
+                row.style.display = 'table-row';
+              } else {
+                row.style.display = 'none';
+              }
+            } else {
+              row.style.display = 'none';
+            }
+          });
+        }
+  
+        searchInput.addEventListener('keyup', filterRows);
+        roleFilter.addEventListener('change', filterRows);
+        classFilter.addEventListener('change', filterRows);
+  
+      });
+    </script>
+</body>
+
+</html>

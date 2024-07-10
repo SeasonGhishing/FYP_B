@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Student Registration</title>
+</head>
+<body>
+    <div class="registration-container">
+        <h2>Student Registration</h2>
+        <form action="{student_registration_endpoint}" method="post">
+            <!-- Common fields for all roles -->
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <!-- Additional fields for student -->
+            <label for="full_name">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" required>
+            
+            <label for="identity_number">Identity Number:</label>
+            <input type="text" id="identity_number" name="identity_number">
+            
+            <label for="gender">Gender:</label>
+            <input type="text" id="gender" name="gender">
+            
+            <label for="phone_number">Phone Number:</label>
+            <input type="tel" id="phone_number" name="phone_number">
+            
+            <label for="parent_name">Parent's Name:</label>
+            <input type="text" id="parent_name" name="parent_name">
+            
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>
